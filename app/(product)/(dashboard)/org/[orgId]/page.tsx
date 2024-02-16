@@ -1,18 +1,13 @@
 import { createBoard } from "@/actions/createBoard";
-import { Button } from "@/components/ui/button";
+import FormInput from "@/components/form/FormInput";
+import FormSubmit from "@/components/form/FormSubmit";
 
 export default function OrgPage() {
   return (
     <div>
       <form action={createBoard}>
-        <input
-          id="title"
-          name="title"
-          required
-          placeholder="Enter board title"
-          className="border-black border p-1"
-        />
-        <Button type="submit">Submit</Button>
+        <FormInput id="title" label="Board Title" />
+        <FormSubmit type="submit">Submit</FormSubmit>
       </form>
     </div>
   );
