@@ -5,10 +5,16 @@ import { Button, ButtonProps } from "../ui/button";
 
 type FormSubmitPropType = ButtonProps & { children: React.ReactNode };
 const FormSubmit = (props: FormSubmitPropType) => {
-  const { children, disabled } = props;
+  const { children, disabled, variant = "primary" } = props;
   const { pending } = useFormStatus();
   return (
-    <Button disabled={pending || disabled} type="submit" size="sm">
+    <Button
+      disabled={pending || disabled}
+      type="submit"
+      size="sm"
+      variant={variant}
+      {...props}
+    >
       {children}
     </Button>
   );
