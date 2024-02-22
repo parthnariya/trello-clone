@@ -6,14 +6,19 @@ import { PlusIcon, XIcon } from "lucide-react";
 import { ElementRef, KeyboardEventHandler, useRef, useState } from "react";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
 import FormInput from "@/components/form/FormInput";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import FormSubmit from "@/components/form/FormSubmit";
+import { useAction } from "@/hooks/useActions";
+import { createList } from "@/actions/createList";
+import { toast } from "sonner";
 
 export const ListForm = () => {
   const formRef = useRef<ElementRef<"form">>(null);
   const inputRef = useRef<ElementRef<"input">>(null);
   const [isEditing, setIsEditing] = useState(false);
+
   const params = useParams();
+  const router = useRouter();
 
   const enableEditing = () => {
     setIsEditing(true);
@@ -26,6 +31,17 @@ export const ListForm = () => {
     setIsEditing(false);
   };
 
+  const { execute, fieldErrors } = useAction(createList, {
+    onSuccess(data) {
+      toast.success(`List ${data.title} created`);
+      disableEditing();
+      router.refresh();
+    },
+    onError(error) {
+      toast.error(error);
+    },
+  });
+
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       disableEditing();
@@ -34,6 +50,10 @@ export const ListForm = () => {
 
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
+
+  const onSubmit = (formData : FormData) => {
+    
+  }
 
   return (
     <ListWrapper>
@@ -47,12 +67,13 @@ export const ListForm = () => {
             ref={inputRef}
             className="text-sm px-2 py-1 h-7 font-medium border-transparent  hover:border-input focus:border-input  transition"
             placeholder="Enter list title.."
+            errors={fieldErrors}
           />
           <input name="boardId" value={params.boardId} hidden />
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add list</FormSubmit>
             <Button size="sm" variant="ghost" onClick={disableEditing}>
-              <XIcon className="h-5 w-5"/>
+              <XIcon className="h-5 w-5" />
             </Button>
           </div>
         </form>
