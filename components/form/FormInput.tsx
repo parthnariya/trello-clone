@@ -28,6 +28,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>((props, ref) => {
           </Label>
         )}
         <Input
+          ref={ref}
           name={id}
           disabled={pending || disabled}
           className={cn("text-sm px-2 py-1 h-7", className)}
