@@ -9,7 +9,12 @@ import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
 import { ListOptions } from "./ListOptions";
 
-export const ListHeader = ({ data }: { data: List }) => {
+type ListHeaderPropType = {
+  onAddCard: () => void;
+  data: List;
+};
+
+export const ListHeader = ({ data, onAddCard }: ListHeaderPropType) => {
   const [title, setTitle] = useState(data.title);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -28,7 +33,7 @@ export const ListHeader = ({ data }: { data: List }) => {
     setIsEditing(false);
   };
 
-  const { execute, isLoading, fieldErrors } = useAction(updateList, {
+  const { execute, fieldErrors } = useAction(updateList, {
     onSuccess(data) {
       toast.success(`List ${data.title} updated`);
       setTitle(data.title);
@@ -91,7 +96,7 @@ export const ListHeader = ({ data }: { data: List }) => {
           {title}
         </div>
       )}
-      <ListOptions data={data} onAddCard={() => {}} />
+      <ListOptions data={data} onAddCard={onAddCard} />
     </div>
   );
 };

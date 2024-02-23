@@ -1,10 +1,10 @@
 "use client";
 
-import { HTMLProps, InputHTMLAttributes, forwardRef } from "react";
-import { useFormStatus } from "react-dom";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
+import { InputHTMLAttributes, forwardRef } from "react";
+import { useFormStatus } from "react-dom";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import FormErrors from "./FormErrors";
 
 type FormInputProps = InputHTMLAttributes<HTMLInputElement> & {
