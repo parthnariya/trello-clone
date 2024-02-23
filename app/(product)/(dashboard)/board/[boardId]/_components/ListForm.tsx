@@ -51,9 +51,14 @@ export const ListForm = () => {
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
-  const onSubmit = (formData : FormData) => {
-    
-  }
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    const boardId = formData.get("boardId") as string;
+    execute({
+      title,
+      boardId,
+    });
+  };
 
   return (
     <ListWrapper>
@@ -61,6 +66,7 @@ export const ListForm = () => {
         <form
           className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"
           ref={formRef}
+          action={onSubmit}
         >
           <FormInput
             id="title"
