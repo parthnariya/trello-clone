@@ -85,16 +85,13 @@ export const ListForm = () => {
         </form>
       ) : (
         <Button
-          className="text-neutral-950 w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center justify-start font-medium text-sm"
+          className="text-neutral-950 w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center justify-start font-medium text-sm h-auto"
           onClick={enableEditing}
         >
           <PlusIcon className="h-4 w-4 mr-2" />
           Add new list
         </Button>
       )}
-      {/* <form className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"> */}
-
-      {/* </form> */}
     </ListWrapper>
   );
 };
