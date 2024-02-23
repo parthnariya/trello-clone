@@ -1,3 +1,4 @@
+import { copyList } from "@/actions/copyList";
 import { deleteList } from "@/actions/deleteList";
 import FormSubmit from "@/components/form/FormSubmit";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAction } from "@/hooks/useActions";
 import { List } from "@prisma/client";
 import { MoreHorizontalIcon, XIcon } from "lucide-react";
+import { ElementRef, useRef } from "react";
 import { toast } from "sonner";
 
 type ListOptionPropsType = {
@@ -18,9 +20,21 @@ type ListOptionPropsType = {
   onAddCard: () => void;
 };
 export const ListOptions = ({ data, onAddCard }: ListOptionPropsType) => {
+  const closeButtonRef = useRef<ElementRef<"button">>(null);
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess(data) {
       toast.success(`list ${data.title} deleted`);
+      closeButtonRef.current?.click();
+    },
+    onError(error) {
+      toast.error(error);
+    },
+  });
+
+  const { execute: executeCopy } = useAction(copyList, {
+    onSuccess(data) {
+      toast.success(`list ${data.title} copied!`);
+      closeButtonRef.current?.click();
     },
     onError(error) {
       toast.error(error);
@@ -34,6 +48,13 @@ export const ListOptions = ({ data, onAddCard }: ListOptionPropsType) => {
     executeDelete({ id, boardId });
   };
 
+  const copyFormSubmit = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+
+    executeCopy({ id, boardId });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -45,7 +66,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionPropsType) => {
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           List actions
         </div>
-        <PopoverClose asChild>
+        <PopoverClose asChild ref={closeButtonRef}>
           <Button
             variant={"ghost"}
             className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
@@ -60,7 +81,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionPropsType) => {
         >
           Add card...
         </Button>
-        <form>
+        <form action={copyFormSubmit}>
           <input hidden id="id" name="id" defaultValue={data.id} />
           <input
             hidden
