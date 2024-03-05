@@ -50,24 +50,25 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const newOrder = lastList ? lastList.order + 1 : 1;
     console.log(listToCopy.cards);
 
-    const dataToAppend = {
+    let dataToAppend = {
       boardId: listToCopy.boardId,
       title: `${listToCopy.title} - Copy`,
       order: newOrder,
     };
     // here is condition to copy only list without card
     if (listToCopy.cards.length > 0) {
-      Object.assign(dataToAppend, "cards", {
-        createMany: {
-          data: listToCopy.cards.map((card) => ({
-            title: card.title,
-            description: card.description,
-            order: card.order,
-          })),
+      dataToAppend = Object.assign(dataToAppend, {
+        cards: {
+          createMany: {
+            data: listToCopy.cards.map((card) => ({
+              title: card.title,
+              description: card.description,
+              order: card.order,
+            })),
+          },
         },
       });
     }
-
     list = await prisma.list.create({
       data: dataToAppend,
       include: {
