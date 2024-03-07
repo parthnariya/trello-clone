@@ -1,3 +1,5 @@
+import { ModalContextProvider } from "@/contexts/ModalContext";
+import { QueryProvider } from "@/providers/QueryProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 
@@ -8,8 +10,10 @@ export default function ProductLayout({
 }) {
   return (
     <ClerkProvider>
-      <Toaster />
-      {children}
+      <QueryProvider>
+        <Toaster />
+        <ModalContextProvider>{children}</ModalContextProvider>
+      </QueryProvider>
     </ClerkProvider>
   );
 }

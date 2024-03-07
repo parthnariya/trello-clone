@@ -1,13 +1,12 @@
 "use client";
 
 import { ListWithCards } from "@/lib/types";
-import { ListWrapper } from "./ListWrapper";
-import { ListHeader } from "./ListHeader";
+import { cn } from "@/lib/utils";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { ElementRef, useRef, useState } from "react";
 import { CardForm } from "./CardForm";
-import { cn } from "@/lib/utils";
 import { CardItem } from "./CardItem";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { ListHeader } from "./ListHeader";
 
 type ListItemPropType = {
   index: number;

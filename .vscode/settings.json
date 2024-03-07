@@ -2,5 +2,6 @@
     "cSpell.ignoreWords": [
         "Taskify",
         "nextjs"
-    ]
+    ],
+    "explorer.compactFolders": false
 }
