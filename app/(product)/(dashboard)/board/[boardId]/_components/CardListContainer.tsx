@@ -12,6 +12,7 @@ import { reorder } from "@/lib/utils";
 import { useAction } from "@/hooks/useActions";
 import { updateListOrder } from "@/actions/updateListOrder";
 import { toast } from "sonner";
+import { updateCardOrder } from "@/actions/updateCardOrder";
 
 type CardListContainer = {
   boardId: string;
@@ -34,6 +35,16 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
       toast.error(error);
     },
   });
+
+  const { execute: executeCardOrderAction } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success("Cards Reordered");
+    },
+    onError(error) {
+      toast.error(error);
+    },
+  });
+
   const onDragEnd: OnDragEndResponder = (result) => {
     const { destination, source, type } = result;
 
@@ -97,6 +108,7 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
         sourceList.cards = reorderedData;
         setOrderedData(() => newOrderedData);
         // TODO : server actions
+        executeCardOrderAction({ boardId, items: sourceList.cards });
       } else {
         //* moving cards across the list
 
@@ -117,6 +129,7 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
 
         setOrderedData(() => newOrderedData);
         // TODO : server actions
+        executeCardOrderAction({ boardId, items: destinationList.cards });
       }
     }
   };
