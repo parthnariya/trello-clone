@@ -9,6 +9,9 @@ import {
   OnDragEndResponder,
 } from "@hello-pangea/dnd";
 import { reorder } from "@/lib/utils";
+import { useAction } from "@/hooks/useActions";
+import { updateListOrder } from "@/actions/updateListOrder";
+import { toast } from "sonner";
 
 type CardListContainer = {
   boardId: string;
@@ -23,6 +26,14 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
     setOrderedData(data);
   }, [data]);
 
+  const { execute: executeListOrderAction } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success("List Reordered");
+    },
+    onError(error) {
+      toast.error(error);
+    },
+  });
   const onDragEnd: OnDragEndResponder = (result) => {
     const { destination, source, type } = result;
 
@@ -40,11 +51,12 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
 
     //! if user moves a list
     if (type === "list") {
-      const item = reorder(orderedData, source.index, destination.index).map(
-        (item, index) => ({ ...item, order: index })
+      const items = reorder(orderedData, source.index, destination.index).map(
+        (item, index) => ({ ...item, order: index + 1 })
       );
-      setOrderedData(() => item);
+      setOrderedData(() => items);
       // TODO : server actions
+      executeListOrderAction({ boardId, items });
     }
 
     //! if user moves a card
@@ -79,7 +91,7 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
           destination.index
         );
         reorderedData.forEach((card, index) => {
-          card.order = index;
+          card.order = index + 1;
         });
 
         sourceList.cards = reorderedData;
@@ -88,14 +100,23 @@ export const CardListContainer = ({ boardId, data }: CardListContainer) => {
       } else {
         //* moving cards across the list
 
-        // TODO 1. remove card from source list
-        const [movedCard] = sourceList.cards.splice(source.index,1)
+        // *1. remove card from source list
+        const [movedCard] = sourceList.cards.splice(source.index, 1);
 
-        // TODO 2. assign new card id to movedCard
+        // *2. assign new card id to movedCard
         movedCard.listId = destination.droppableId;
 
-        
+        // *3. add card to destination list
+        destinationList.cards.splice(destination.index, 0, movedCard);
 
+        // *4 reorder source and destination list
+        sourceList.cards.forEach((item, index) => (item.order = index + 1));
+        destinationList.cards.forEach(
+          (card, index) => (card.order = index + 1)
+        );
+
+        setOrderedData(() => newOrderedData);
+        // TODO : server actions
       }
     }
   };

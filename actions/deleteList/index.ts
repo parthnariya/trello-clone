@@ -17,6 +17,11 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const { id, boardId } = data;
   let list;
   try {
+    await prisma.card.deleteMany({
+      where: {
+        listId: id,
+      },
+    });
     list = await prisma.list.delete({
       where: {
         id,
@@ -27,6 +32,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
   } catch (e) {
+    console.log(e);
     return {
       error: "Failed to delete",
     };

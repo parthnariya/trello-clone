@@ -75,7 +75,7 @@ export const ListForm = () => {
             placeholder="Enter list title.."
             errors={fieldErrors}
           />
-          <input name="boardId" value={params.boardId} hidden />
+          <input name="boardId" defaultValue={params.boardId} hidden />
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add list</FormSubmit>
             <Button size="sm" variant="ghost" onClick={disableEditing}>
