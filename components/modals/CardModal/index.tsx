@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import ModalHeader from "./ModalHeader";
 import ModalDescription from "./ModalDescription";
+import ModalActions from "./ModalActions";
 
 const CardModal = () => {
   const { id, isOpen, handleClose } = useContext(ModalContext);
@@ -30,6 +31,11 @@ const CardModal = () => {
               )}
             </div>
           </div>
+          {!cardData ? (
+            <ModalActions.Skeleton />
+          ) : (
+            <ModalActions data={cardData} />
+          )}
         </div>
       </DialogContent>
     </Dialog>
