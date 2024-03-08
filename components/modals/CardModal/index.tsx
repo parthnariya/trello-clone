@@ -7,6 +7,7 @@ import { fetcher } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import ModalHeader from "./ModalHeader";
+import ModalDescription from "./ModalDescription";
 
 const CardModal = () => {
   const { id, isOpen, handleClose } = useContext(ModalContext);
@@ -19,6 +20,17 @@ const CardModal = () => {
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent>
         {!cardData ? <ModalHeader.Skeleton /> : <ModalHeader data={cardData} />}
+        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+          <div className="col-span-3">
+            <div className="w-full space-y-6">
+              {!cardData ? (
+                <ModalDescription.Skeleton />
+              ) : (
+                <ModalDescription data={cardData} />
+              )}
+            </div>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
