@@ -6,6 +6,8 @@ import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { CopyCardSchema } from "./schema";
 import { InputType, ReturnType } from "./types";
+import createAuditLog from "@/lib/createAuditLog";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -56,6 +58,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       include: {
         list: true,
       },
+    });
+    await createAuditLog({
+      action: ACTION.CREATE,
+      entityType: ENTITY_TYPE.CARD,
+      entityId: card.id,
+      entityTitle: card.title,
     });
   } catch (e) {
     console.log(e);

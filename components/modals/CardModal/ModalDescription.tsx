@@ -25,7 +25,8 @@ const ModalDescription = ({ data }: { data: CardWithList }) => {
   const { fieldErrors, execute } = useAction(updateCard, {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["card", data.id] });
-      disableEditing()
+      queryClient.invalidateQueries({ queryKey: ["card-log", data.id] });
+      disableEditing();
       toast.success("title updated successfully");
     },
     onError: (error) => {

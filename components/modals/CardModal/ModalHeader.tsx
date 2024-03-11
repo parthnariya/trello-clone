@@ -19,8 +19,11 @@ const ModalHeader = ({ data }: { data: CardWithList }) => {
   const [title, setTitle] = useState(data.title);
 
   const { execute, fieldErrors } = useAction(updateCard, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["card", data.id] });
+      queryClient.invalidateQueries({ queryKey: ["card-log", data.id] });
+
+      setTitle(data.title);
       toast.success("title updated successfully");
     },
     onError: (error) => {
