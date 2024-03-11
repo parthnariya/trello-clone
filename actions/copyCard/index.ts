@@ -66,7 +66,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityTitle: card.title,
     });
   } catch (e) {
-    console.log(e);
     return {
       error: "Failed to copy",
     };

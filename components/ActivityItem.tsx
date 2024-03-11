@@ -12,7 +12,7 @@ const ActivityItem = ({ item }: { item: AuditLog }) => {
         <p className="text-sm text-muted-foreground">
           <span className="font-semibold lowercase text-neutral-700">
             {item.userName}
-          </span>
+          </span>{" "}
           {generateLogMessage(item)}
         </p>
         <p className="text-xs text-muted-foreground">

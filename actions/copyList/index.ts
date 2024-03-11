@@ -50,7 +50,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
 
     const newOrder = lastList ? lastList.order + 1 : 1;
-    console.log(listToCopy.cards);
 
     let dataToAppend = {
       boardId: listToCopy.boardId,
@@ -84,7 +83,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityTitle: list.title,
     });
   } catch (e) {
-    console.log(e);
     return {
       error: "Failed to copy",
     };

@@ -31,7 +31,6 @@ export const ModalContextProvider = ({
   const handleOpen = (id: string) => {
     setId(id);
     setIsOpen(true);
-    console.log("in context function");
   };
 
   const handleClose = () => {

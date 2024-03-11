@@ -32,7 +32,6 @@ const FormPicker = ({ id, errors }: FormPickerPropType) => {
           setImages(newImages);
         }
       } catch (e) {
-        console.log(e);
         setImages(defaultImages);
       } finally {
         setIsLoading(false);
